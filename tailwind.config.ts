@@ -9,9 +9,8 @@ const config: Config = {
   theme: {
     extend: {
       backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        "home-background": "url('/images/home-background.webp')",
+        "eve-online": "url('/images/eve_online_fitting_platform_top_view_view_from_above.webp')",
       },
     },
   },
