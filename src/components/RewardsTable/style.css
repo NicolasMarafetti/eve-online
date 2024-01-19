@@ -1,0 +1,38 @@
+#reward_table {
+  border-collapse: collapse;
+  margin: auto;
+  margin-right: 20px;
+}
+
+#reward_table thead {
+  background: black;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+}
+
+#reward_table th,
+#reward_table td {
+  border: 1px solid white;
+  padding: 10px;
+}
+
+#reward_table th button,
+#reward_table td button {
+  margin-left: 5px;
+  padding: 5px;
+}
+
+#reward_table th input,
+#reward_table td input {
+  background: transparent;
+  border: 1px solid white;
+  color: white;
+}
+
+#reward_table td.item_price .item_price_content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+/*# sourceMappingURL=style.css.map */

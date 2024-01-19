@@ -1,0 +1,12 @@
+.home_fitting {
+    transition: all 0.6s ease-in;
+    transform-style: preserve-3d;
+    left: 0;
+    top: 0;
+}
+
+.simulation_in_progress {
+    transform: rotate3d(3, -1, 2, 30deg);
+    left: 5vw;
+    top: -10vh;
+}

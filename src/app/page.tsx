@@ -1,10 +1,6 @@
 'use client'
 
-import { Header } from "@/components/Header/Header";
 import { HomeFitting } from "@/components/HomeFitting/HomeFitting";
-import ModalAddItemPrice from "@/components/ModalAddItemPrice/ModalAddItemPrice";
-import ModalAddReward from "@/components/ModalAddReward/ModalAddReward";
-import RewardsTable from "@/components/RewardsTable/RewardsTable";
 import { Corporation } from "@/types/Corporation";
 import { Item } from "@/types/Item";
 import { RewardItem } from "@/types/RewardTableItem";

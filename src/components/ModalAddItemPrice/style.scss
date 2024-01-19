@@ -1,0 +1,26 @@
+#add_item_price{
+    label{
+        display: inline-block;
+        margin-right: 5px;
+        width: 120px;
+    }
+
+    .object_name{
+        display: flex;
+        align-items: center;
+
+        p{
+            margin-right: 5px;
+        }
+
+        button{
+            padding: 5px;
+        }
+    }
+
+    input[type="submit"]{
+        display: block;
+        margin: auto;
+        margin-top: 20px;
+    }
+}

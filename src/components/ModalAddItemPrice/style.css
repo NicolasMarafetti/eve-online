@@ -1,0 +1,29 @@
+#add_item_price label {
+  display: inline-block;
+  margin-right: 5px;
+  width: 120px;
+}
+
+#add_item_price .object_name {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#add_item_price .object_name p {
+  margin-right: 5px;
+}
+
+#add_item_price .object_name button {
+  padding: 5px;
+}
+
+#add_item_price input[type="submit"] {
+  display: block;
+  margin: auto;
+  margin-top: 20px;
+}
+/*# sourceMappingURL=style.css.map */

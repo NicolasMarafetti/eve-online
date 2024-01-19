@@ -1,0 +1,44 @@
+#add_reward{
+    z-index: 1;
+
+    div.label_input{
+        margin: 10px 0;
+
+        label{
+            display: inline-block;
+            margin-right: 5px;
+            width: 200px;
+        }
+
+        input[type="number"]{
+            width: 100px;
+        }
+    }
+
+    .required_items{
+        ul{
+            list-style-type: none;
+            padding: 0;
+
+            li{
+                input[type="number"]{
+                    width: 50px;
+                }
+
+                span{
+                    margin: 0 10px;
+                }
+            }
+        }
+    }
+
+    button{
+        display: block;
+    }
+
+    input[type="submit"]{
+        display: block;
+        margin: auto;
+        margin-top: 50px;
+    }
+}

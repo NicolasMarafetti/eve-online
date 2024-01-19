@@ -1,0 +1,41 @@
+#add_reward {
+  z-index: 1;
+}
+
+#add_reward div.label_input {
+  margin: 10px 0;
+}
+
+#add_reward div.label_input label {
+  display: inline-block;
+  margin-right: 5px;
+  width: 200px;
+}
+
+#add_reward div.label_input input[type="number"] {
+  width: 100px;
+}
+
+#add_reward .required_items ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+#add_reward .required_items ul li input[type="number"] {
+  width: 50px;
+}
+
+#add_reward .required_items ul li span {
+  margin: 0 10px;
+}
+
+#add_reward button {
+  display: block;
+}
+
+#add_reward input[type="submit"] {
+  display: block;
+  margin: auto;
+  margin-top: 50px;
+}
+/*# sourceMappingURL=style.css.map */
