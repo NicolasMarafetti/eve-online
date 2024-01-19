@@ -5,6 +5,7 @@ import { Corporation } from "@/types/Corporation";
 import { Item } from "@/types/Item";
 import { RewardItem } from "@/types/RewardTableItem";
 import { Station } from "@/types/Station";
+import Head from "next/head";
 import { useCallback, useEffect, useState } from "react";
 
 export default function Home() {
@@ -56,8 +57,8 @@ export default function Home() {
   }
 
   return (
-    <div className="App w-screen h-screen bg-home-background bg-cover bg-center overflow-hidden">
-      <HomeFitting />
-    </div>
+      <div className="App w-screen h-screen bg-home-background bg-cover bg-center overflow-hidden">
+        <HomeFitting />
+      </div>
   );
 }

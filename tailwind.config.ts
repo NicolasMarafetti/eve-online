@@ -13,6 +13,9 @@ const config: Config = {
         "eve-online": "url('/images/eve_online_fitting_platform_top_view_view_from_above.webp')",
       },
     },
+    fontFamily: {
+      'quantico': ['Quantico', 'sans-serif'],
+    }
   },
   plugins: [],
 };
