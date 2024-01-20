@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Quantico } from "next/font/google";
 import "./globals.css";
+import { FiltersProvider } from "@/context/filters";
 
 const quantico = Quantico({ subsets: ["latin"], weight: "400" });
 
@@ -16,7 +17,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${quantico.className} overflow-hidden`}>{children}</body>
+      <body className={`${quantico.className} overflow-hidden`}>
+        <FiltersProvider>
+          {children}
+        </FiltersProvider>
+      </body>
     </html >
   );
 }

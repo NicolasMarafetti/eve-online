@@ -1,3 +1,5 @@
+'use client'
+
 import Image from 'next/image';
 import React from 'react'
 
@@ -59,7 +61,7 @@ export default function ImprovementFilter({ simulationInProgress }: Props) {
                             </div>
                             <button className="bg-gradient-to-r from-[#131518] h-full to-transparent px-2 py-4 flex flex-1 items-center justify-between" onClick={() => toggleFilter(key)}>
                                 <p className="text-gray-500">{filter.name}</p>
-                                <button className={`${filter.enabled ? "bg-green-500" : "bg-gray-500"} w-4 h-4 rounded-full`}></button>
+                                <div className={`${filter.enabled ? "bg-green-500" : "bg-gray-500"} w-4 h-4 rounded-full`}></div>
                             </button>
                         </div>
                     )
