@@ -1,8 +1,3 @@
-import EMResistIcon from '../images/icon_resist_em.png';
-import thermResistIcon from '../images/icon_resist_therm.png';
-import expResistIcon from '../images/icon_resist_exp.png';
-import kinResistIcon from '../images/icon_resist_kin.png';
-
 export type Resistance = {
     [key: string]: any
 };
@@ -15,8 +10,8 @@ export const resistanceColors: Resistance = {
 }
 
 export const resistanceIcons: Resistance = {
-    EM: EMResistIcon,
-    Thermique: thermResistIcon,
-    Explosive: expResistIcon,
-    Kinetic: kinResistIcon
+    EM: "/images/resistances/icon_resist_em.png",
+    Thermique: "/images/resistances/icon_resist_therm.png",
+    Explosive: "/images/resistances/icon_resist_exp.png",
+    Kinetic: "/images/resistances/icon_resist_kin.png"
 };
