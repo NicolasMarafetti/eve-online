@@ -9,14 +9,18 @@ export const HomeFitting = () => {
 
     const simulationButtonClicked = () => {
         setSimulationInProgress(!simulationInProgress);
+
+        setTimeout(() => {
+            setSimulationInProgress(false);
+        }, 3000);
     }
 
     return (
         <div className={`${styles.home_fitting} ${simulationInProgress ? styles.simulation_in_progress : ""} absolute bg-eve-online bg-cover bg-center h-screen w-screen`}>
-            <button className="absolute left-48 top-48 bg-yellow-500 text-white w-32 h-10" onClick={simulationButtonClicked}>Simuler</button>
+            <button className="absolute left-10 top-10 bg-yellow-500 text-white w-32 h-10" onClick={simulationButtonClicked}>Simuler</button>
             <div className="h-full flex items-end">
                 <HomeFittingResult />
-                <HomeFittingFilters />
+                <HomeFittingFilters simulationInProgress={simulationInProgress} />
             </div>
         </div>
     )
