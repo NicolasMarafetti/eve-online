@@ -1,0 +1,15 @@
+$range_background_color: #0b131a;
+
+.adding_ship_modal {
+    input[type="range"]::-webkit-slider-runnable-track {
+        background-color: $range_background_color;
+    }
+
+    input[type="range"]::-moz-range-track {
+        background-color: $range_background_color;
+    }
+
+    input[type="range"]::-ms-track {
+        background-color: $range_background_color;
+    }
+}

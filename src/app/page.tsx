@@ -1,6 +1,6 @@
 'use client'
 
-import AddingShipModal from "@/components/AddingShipModal";
+import AddingShipModal from "@/components/AddingShipModal/AddingShipModal";
 import { HomeFitting } from "@/components/HomeFitting/HomeFitting";
 import { useFiltersContext } from "@/context/filters";
 
