@@ -22,6 +22,6 @@ export default function RootLayout({
           {children}
         </FiltersProvider>
       </body>
-    </html >
+    </html>
   );
 }

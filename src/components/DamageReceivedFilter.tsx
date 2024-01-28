@@ -47,10 +47,10 @@ export default function DamageReceivedFilter({ simulationInProgress }: Props) {
         <div className="pb-[5vh] px-20">
             <p className="mb-5 text-center text-gray-500">Damage received</p>
             <div className="flex items-center justify-around mb-5 flex-wrap">
-                <button className="text-gray-300 underline" onClick={() => activityTypeClicked('missions_lvl_1')}>Missions lvl 1</button>
-                <button className="text-gray-300 underline" onClick={() => activityTypeClicked('missions_lvl_2')}>Missions lvl 2</button>
-                <button className="text-gray-300 underline" onClick={() => activityTypeClicked('missions_lvl_3')}>Missions lvl 3</button>
-                <button className="text-gray-300 underline" onClick={() => activityTypeClicked('missions_lvl_4')}>Missions lvl 4</button>
+                <button className="mx-3 text-gray-300 underline" onClick={() => activityTypeClicked('missions_lvl_1')}>Missions lvl 1</button>
+                <button className="mx-3 text-gray-300 underline" onClick={() => activityTypeClicked('missions_lvl_2')}>Missions lvl 2</button>
+                <button className="mx-3 text-gray-300 underline" onClick={() => activityTypeClicked('missions_lvl_3')}>Missions lvl 3</button>
+                <button className="mx-3 text-gray-300 underline" onClick={() => activityTypeClicked('missions_lvl_4')}>Missions lvl 4</button>
             </div>
             <label htmlFor="disabled-range" className="block mb-2 text-sm font-medium text-gray-500 dark:text-gray-500">DPS received per second</label>
             <div>
@@ -59,7 +59,7 @@ export default function DamageReceivedFilter({ simulationInProgress }: Props) {
                     marginLeft: calculateTooltipMarginLeft(),
                     transform: 'translateX(-50%)'
                 }}>
-                    <div className="bg-white text-black truncate text-center text-xs rounded py-1">{damageReceived}</div>
+                    <div className="bg-white text-black truncate text-center text-sm rounded py-1">{damageReceived}</div>
                     <svg className="absolute text-white w-full h-2 left-0 top-100" x="0px" y="0px" viewBox="0 0 255 255">
                         <polygon className="fill-current" points="0,0 127.5,127.5 255,0"></polygon>
                     </svg>

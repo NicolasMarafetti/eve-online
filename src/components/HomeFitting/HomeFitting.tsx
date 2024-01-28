@@ -1,5 +1,6 @@
 import { useState } from "react"
 import styles from "./HomeFitting.module.scss";
+import Fit from "../Fit";
 import HomeFittingFilters from "../HomeFittingFilters";
 import HomeFittingResult from "../HomeFittingResult";
 
@@ -16,12 +17,15 @@ export const HomeFitting = () => {
     }
 
     return (
-        <div className={`${styles.home_fitting} ${simulationInProgress ? styles.simulation_in_progress : ""} absolute bg-eve-online bg-cover bg-center h-screen w-screen`}>
-            <button className="absolute left-10 top-10 bg-yellow-500 text-white w-32 h-10" onClick={simulationButtonClicked}>Simuler</button>
-            <div className="h-full flex items-end">
+        <div className={`${styles.home_fitting} ${simulationInProgress ? styles.simulation_in_progress : ""} absolute bg-eve-online bg-cover bg-center flex h-screen w-screen`}>
+            <div className="flex-1 flex flex-col justify-between">
+                <button className="absolute left-10 top-10 bg-yellow-500 text-white w-32 h-10" onClick={simulationButtonClicked}>Simuler</button>
+                <div className="flex flex-1 flex-col justify-center">
+                    <Fit />
+                </div>
                 <HomeFittingResult />
-                <HomeFittingFilters simulationInProgress={simulationInProgress} />
             </div>
+            <HomeFittingFilters simulationInProgress={simulationInProgress} />
         </div>
     )
 }
