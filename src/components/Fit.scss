@@ -13480,20 +13480,12 @@ th.table-head {
     background-size: contain;
     width: 48px;
     height: 48px;
-    display: inline-block;
     z-index: 2;
 }
 .fit-base .slot > a {
     display: inline-block;
     width: 32px;
     height: 32px;
-    margin-top: 8px;
-    margin-left: 9px;
-    /*&.empty {
-                img {
-                    padding: 3px;
-                }
-            }*/
 }
 .fit-base .high-slots {
     z-index: 1;
