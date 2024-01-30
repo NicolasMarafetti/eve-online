@@ -9,6 +9,14 @@ interface Props {
 
 export default function FitLowSlot({ lowSlot, index }: Props) {
 
+    if (lowSlot.status === "offline") {
+        return (
+            <div className={`flex items-center justify-center slot low-slot low-slot-${index + 1}`} key={index}>
+                <div className="flex items-center justify-center slot-item"></div>
+            </div>
+        )
+    }
+
     if (lowSlot.status === "loading") {
         return (
             <div className={`flex items-center justify-center slot low-slot low-slot-${index + 1}`} key={index}>
@@ -23,6 +31,7 @@ export default function FitLowSlot({ lowSlot, index }: Props) {
         <div className={`flex items-center justify-center slot low-slot low-slot-${index + 1}`} key={index}>
             <a className="slot-item" data-dropdown={`dropdown-lowslot-${index + 1}`}>
                 <Image height="1000" width="1000" alt="fit" src={lowSlot.imageSrc} data-tooltip="true" title={lowSlot.name} />
+                <p className="absolute bottom-10 right-4 text-center text-sm">70</p>
             </a>
         </div>
     )

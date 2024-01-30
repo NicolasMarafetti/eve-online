@@ -9,6 +9,14 @@ interface Props {
 
 export default function FitRigSlot({ rig, index }: Props) {
 
+    if (rig.status === "offline") {
+        return (
+            <div className={`flex items-center justify-center slot rig-slot rig-slot-${index + 1}`} key={index}>
+                <div className="flex items-center justify-center slot-item"></div>
+            </div>
+        )
+    }
+
     if (rig.status === "loading") {
         return (
             <div className={`flex items-center justify-center slot rig-slot rig-slot-${index + 1}`} key={index}>
@@ -23,6 +31,7 @@ export default function FitRigSlot({ rig, index }: Props) {
         <div className={`flex items-center justify-center slot rig-slot rig-slot-${index + 1}`} key={index}>
             <a className="slot-item" data-dropdown={`dropdown-rigslot-${index + 1}`}>
                 <Image height="1000" width="1000" alt="fit" src={rig.imageSrc} data-tooltip="true" title={rig.name} />
+                <p className="absolute -bottom-1 -right-5 text-center text-sm">70</p>
             </a>
         </div>
     )

@@ -9,6 +9,15 @@ interface Props {
 
 export default function FitHighSlot({ highSlot, index }: Props) {
 
+    if (highSlot.status === "offline") {
+        return (
+            <div className={`flex items-center justify-center slot high-slot high-slot-${index + 1}`} key={index}>
+                <div className="flex items-center justify-center slot-item">
+                </div>
+            </div>
+        )
+    }
+
     if (highSlot.status === "loading") {
         return (
             <div className={`flex items-center justify-center slot high-slot high-slot-${index + 1}`} key={index}>
@@ -24,6 +33,7 @@ export default function FitHighSlot({ highSlot, index }: Props) {
             <a className="slot-item" data-dropdown={`dropdown-highslot-${index + 1}`}>
                 <Image height="1000" width="1000" alt="fit" src={highSlot.imageSrc} data-tooltip="true" title={highSlot.name} />
             </a>
+            <p className="absolute -bottom-3 text-center text-sm">96</p>
         </div>
     )
 }

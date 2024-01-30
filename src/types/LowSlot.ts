@@ -1,5 +1,5 @@
 export interface LowSlot {
     name: string,
     imageSrc: string,
-    status: "online" | "loading"
+    status: "online" | "loading" | "offline"
 }

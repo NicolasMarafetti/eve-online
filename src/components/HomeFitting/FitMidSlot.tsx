@@ -9,6 +9,15 @@ interface Props {
 
 export default function FitMidSlot({ midSlot, index }: Props) {
 
+    if (midSlot.status === "offline") {
+        return (
+            <div className={`flex items-center justify-center slot mid-slot mid-slot-${index + 1}`} key={index}>
+                <div className="flex items-center justify-center slot-item"></div>
+            </div>
+        )
+    }
+
+
     if (midSlot.status === "loading") {
         return (
             <div className={`flex items-center justify-center slot mid-slot mid-slot-${index + 1}`} key={index}>
@@ -23,6 +32,7 @@ export default function FitMidSlot({ midSlot, index }: Props) {
         <div className={`flex items-center justify-center slot mid-slot mid-slot-${index + 1}`} key={index}>
             <a className="slot-item" data-dropdown={`dropdown-midslot-${index + 1}`}>
                 <Image height="1000" width="1000" alt="fit" src={midSlot.imageSrc} data-tooltip="true" title={midSlot.name} />
+                <p className="absolute bottom-1 -left-5 text-center text-sm">80</p>
             </a>
         </div>
     )
