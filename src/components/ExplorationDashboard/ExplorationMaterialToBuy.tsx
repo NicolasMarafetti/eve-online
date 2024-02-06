@@ -14,7 +14,7 @@ export default function ExplorationMaterialToBuy() {
                     Object.keys(stuffToBuyAtAmar).map((itemId) => {
                         const stuff = stuffToBuyAtAmar[parseInt(itemId)];
                         return (
-                            <li className="border border-black p-1 m-1" key={itemId}>{stuff.name} x {stuff.quantity}</li>
+                            <li className="border border-black p-1 m-1" key={itemId}>{stuff.name} x {stuff.quantity.toLocaleString()}</li>
                         )
                     })
                 }

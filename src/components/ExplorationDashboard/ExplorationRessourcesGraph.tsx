@@ -1,4 +1,5 @@
 import { EXPORATION_STUFF_PER_BASE } from '@/const/explorationStuffPerBase'
+import { FITS } from '@/const/fits';
 import React, { useEffect, useState } from 'react'
 import { CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts'
 
@@ -13,10 +14,13 @@ export default function ExplorationRessourcesGraph() {
         const dataTmp: {
             name: string,
             uv: number
-        }[] = EXPORATION_STUFF_PER_BASE.map((stuff) => ({
-            name: stuff.stuff,
-            uv: stuff.quantity
-        }))
+        }[] = EXPORATION_STUFF_PER_BASE.map((stuff) => {
+            const fitName = FITS.find(fit => fit.id === stuff.fitId)?.name || 'Unknown';
+            return {
+                name: fitName,
+                uv: stuff.quantity
+            }
+        })
 
         setData(dataTmp);
     }, []);
