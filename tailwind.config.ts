@@ -12,6 +12,8 @@ const config: Config = {
         "add-ship-modal": "url('/images/add-ship-modal.webp')",
         "home-background": "url('/images/home-background.webp')",
         "eve-online": "url('/images/eve_online_fitting_platform_top_view_view_from_above.webp')",
+        "exploration-dashboard": "url('/images/exploration-dashboard/background.webp')",
+        "characters": "url('/images/characters/background.webp')",
       },
     },
     fontFamily: {
