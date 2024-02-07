@@ -20,7 +20,6 @@ export default function ExplorationDashboard() {
             </section>
             <section className="absolute flex items-start left-1/2 bottom-0 transform -translate-x-1/2">
                 <ExplorationCosts />
-                <ExplorationFits />
                 <ExplorationInventory />
                 <ExplorationStuffPerBase />
             </section>

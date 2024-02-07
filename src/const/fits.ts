@@ -16,10 +16,6 @@ export const FITS = [
                 quantity: 2
             },
             {
-                itemId: 7,
-                quantity: 1
-            },
-            {
                 itemId: 8,
                 quantity: 2
             },
@@ -35,7 +31,10 @@ export const FITS = [
                 itemId: 13,
                 quantity: 2
             }
-        ]
+        ],
+        ship: {
+            itemId: 7
+        }
     },
     {
         id: 2,
@@ -58,10 +57,6 @@ export const FITS = [
                 quantity: 2
             },
             {
-                itemId: 7,
-                quantity: 1
-            },
-            {
                 itemId: 8,
                 quantity: 2
             },
@@ -69,7 +64,10 @@ export const FITS = [
                 itemId: 14,
                 quantity: 2
             }
-        ]
+        ],
+        ship: {
+            itemId: 7
+        }
     },
     {
         id: 3,
@@ -88,10 +86,6 @@ export const FITS = [
                 quantity: 2
             },
             {
-                itemId: 7,
-                quantity: 1
-            },
-            {
                 itemId: 8,
                 quantity: 2
             },
@@ -103,6 +97,9 @@ export const FITS = [
                 itemId: 12,
                 quantity: 2
             }
-        ]
+        ],
+        ship: {
+            itemId: 7
+        }
     }
 ]

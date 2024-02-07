@@ -1,5 +1,6 @@
 import { ALLIANCE_STATIONS, STATION } from "@/const/alliance-stations";
 import { EXPLORATION_BLUEPRINTS } from "@/const/exploration-blueprints";
+import { EXPLORATION_ITEMS, ITEM } from "@/const/exploration-items";
 import { EXPLORATIONS_MATERIALS } from "@/const/exploration-materials";
 import { EXPORATION_STUFF_PER_BASE } from "@/const/explorationStuffPerBase";
 import { FITS } from "@/const/fits";
@@ -20,6 +21,59 @@ export const calculateNSBuyCosts = () => {
 
 export const countAllianceStationsNeedingExplorationStuff = () => {
     return ALLIANCE_STATIONS.filter(station => station.needExplorationShips).length;
+}
+
+export const getStuffForFit = (fitId: number): { [itemId: number]: number } | null => {
+    let items: { [itemId: number]: number } = {};
+    const fit = FITS.find(fit => fit.id === fitId);
+
+    if (!fit) return null;
+
+    fit.items.forEach((fitItem) => {
+        const item = EXPLORATION_ITEMS.find(item => item.id === fitItem.itemId);
+
+        if (item) {
+            if (items[item.id]) {
+                items[item.id] += fitItem.quantity;
+            } else {
+                items[item.id] = fitItem.quantity;
+            }
+        }
+    });
+
+    return items;
+}
+
+export const getEquipementsToBuild = (): { [stuffId: number]: number } => {
+    const equipements: { [stuffId: number]: number } = {};
+
+    // Searching Material to Buy
+    ALLIANCE_STATIONS.forEach((station) => {
+        if (station.needExplorationShips) {
+            EXPORATION_STUFF_PER_BASE.forEach((stuff) => {
+                if (stuff.fitId) {
+                    const fitQuantityRequired = stuff.quantity;
+                    const fitQuantityInStationInventory = searchFitQuantityInStationInventory(station, stuff.fitId);
+
+                    if (fitQuantityInStationInventory < fitQuantityRequired) {
+                        const stuffs = getStuffForFit(stuff.fitId);
+
+                        if (!stuffs) return;
+
+                        for (let stuffId in stuffs) {
+                            if (equipements[stuffId]) {
+                                equipements[stuffId] += stuffs[stuffId] * (fitQuantityRequired - fitQuantityInStationInventory);
+                            } else {
+                                equipements[stuffId] = stuffs[stuffId] * (fitQuantityRequired - fitQuantityInStationInventory);
+                            }
+                        }
+                    }
+                }
+            })
+        }
+    })
+
+    return equipements;
 }
 
 export const getFitItems = (fitId: number) => {
@@ -62,6 +116,48 @@ const getItemMaterialRequired = (itemId: number): { [itemId: number]: number } |
     })
 
     return materialsRequired;
+}
+
+export const getShipForFit = (fitId: number): ITEM | null => {
+    const fit = FITS.find(fit => fit.id === fitId);
+
+    if (!fit) return null;
+
+    const item = EXPLORATION_ITEMS.find(item => item.id === fit.ship.itemId);
+
+    if (!item) return null;
+
+    return item;
+}
+
+export const getShipsToBuild = (): { [shipId: number]: number } => {
+    const ships: { [shipId: number]: number } = {};
+
+    // Searching Material to Buy
+    ALLIANCE_STATIONS.forEach((station) => {
+        if (station.needExplorationShips) {
+            EXPORATION_STUFF_PER_BASE.forEach((stuff) => {
+                if (stuff.fitId) {
+                    const fitQuantityRequired = stuff.quantity;
+                    const fitQuantityInStationInventory = searchFitQuantityInStationInventory(station, stuff.fitId);
+
+                    if (fitQuantityInStationInventory < fitQuantityRequired) {
+                        const ship = getShipForFit(stuff.fitId);
+
+                        if (!ship) return;
+
+                        if (ships[ship.id]) {
+                            ships[ship.id]++;
+                        } else {
+                            ships[ship.id] = 1;
+                        }
+                    }
+                }
+            })
+        }
+    })
+
+    return ships;
 }
 
 export const getStuffToBuy = (multiplier: number): { [materialId: number]: STUFF_TO_BUY } => {
@@ -121,7 +217,7 @@ export const getStuffToBuy = (multiplier: number): { [materialId: number]: STUFF
         if (materialOwned[materialId]) {
             materialToBuy[materialId].quantity -= materialOwned[materialId].quantity;
 
-            if(materialToBuy[materialId].quantity < 0) {
+            if (materialToBuy[materialId].quantity < 0) {
                 delete materialToBuy[materialId];
             }
         }

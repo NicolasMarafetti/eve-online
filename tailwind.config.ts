@@ -10,10 +10,13 @@ const config: Config = {
     extend: {
       backgroundImage: {
         "add-ship-modal": "url('/images/add-ship-modal.webp')",
+        "production-section-title-background": "url('/images/production/section-title-background.webp')",
         "home-background": "url('/images/home-background.webp')",
         "eve-online": "url('/images/eve_online_fitting_platform_top_view_view_from_above.webp')",
         "exploration-dashboard": "url('/images/exploration-dashboard/background.webp')",
         "characters": "url('/images/characters/background.webp')",
+        "production": "url('/images/production/background.webp')",
+        "production-title-background": "url('/images/production/title-background.webp')",
       },
     },
     fontFamily: {

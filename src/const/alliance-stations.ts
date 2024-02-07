@@ -92,7 +92,12 @@ export const ALLIANCE_STATIONS = [
         system: "Shitaht",
         structure: "Fortizar",
         needExplorationShips: true,
-        inventory: []
+        inventory: [
+            {
+                stuffId: 7,
+                quantity: 1
+            }
+        ]
     },
     {
         id: 5,

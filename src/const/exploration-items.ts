@@ -1,4 +1,9 @@
-export const EXPORATION_ITEMS = [
+export type ITEM = {
+    id: number;
+    name: string;
+}
+
+export const EXPLORATION_ITEMS = [
     {
         id: 1,
         name: "5MN Microwarpdrive I",
