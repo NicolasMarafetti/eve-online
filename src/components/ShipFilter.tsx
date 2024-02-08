@@ -6,7 +6,7 @@ import React from 'react'
 
 import './ShipFilter.scss';
 
-export default function ShipFilter() {
+export default function ShipContext() {
 
     const { setAddingShip } = useFiltersContext();
 

@@ -4,7 +4,7 @@ import { EXPLORATION_ITEMS, ITEM } from "@/const/exploration-items";
 import { EXPLORATIONS_MATERIALS } from "@/const/exploration-materials";
 import { EXPORATION_STUFF_PER_BASE } from "@/const/explorationStuffPerBase";
 import { FITS } from "@/const/fits";
-import { cloneDeep } from "lodash";
+import { Ship } from "@/types/Ship";
 
 export type STUFF_TO_BUY = {
     name: string;
@@ -118,7 +118,7 @@ const getItemMaterialRequired = (itemId: number): { [itemId: number]: number } |
     return materialsRequired;
 }
 
-export const getShipForFit = (fitId: number): ITEM | null => {
+export const getShipForFit = (fitId: number): Ship | null => {
     const fit = FITS.find(fit => fit.id === fitId);
 
     if (!fit) return null;
@@ -127,11 +127,18 @@ export const getShipForFit = (fitId: number): ITEM | null => {
 
     if (!item) return null;
 
-    return item;
+    return {
+        id: item.id.toString(),
+        name: item.name,
+        imageSrc: "",
+        highSlots: 0,
+        midSlots: 0,
+        lowSlots: 0
+    };
 }
 
-export const getShipsToBuild = (): { [shipId: number]: number } => {
-    const ships: { [shipId: number]: number } = {};
+export const getShipsToBuild = (): { [shipId: string]: number } => {
+    const ships: { [shipId: string]: number } = {};
 
     // Searching Material to Buy
     ALLIANCE_STATIONS.forEach((station) => {

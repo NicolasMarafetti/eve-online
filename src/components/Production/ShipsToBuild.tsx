@@ -7,15 +7,20 @@ export default function ShipsToBuild() {
     const shipsToBuild = getShipsToBuild();
 
     return (
-        <ul>
+        <ul className="flex justify-center">
             {
                 Object.keys(shipsToBuild).map((shipId) => {
                     const ship = EXPLORATION_ITEMS.find(item => item.id === parseInt(shipId));
                     if (!ship) return null;
                     return (
-                        <li className="border border-black flex flex-col items-center p-1 m-1" key={parseInt(shipId)}>
-                            <p>{ship.name}</p>
-                            <p>x {shipsToBuild[parseInt(shipId)].toLocaleString()}</p>
+                        <li className="border border-black flex items-center p-1 m-1" key={parseInt(shipId)}>
+                            <div className="flex flex-col items-center">
+                                <p>{ship.name}</p>
+                                <p>x {shipsToBuild[parseInt(shipId)].toLocaleString()}</p>
+                            </div>
+                            <div className="bg-gray-600 h-10 rounded-full w-10">
+
+                            </div>
                         </li>
                     )
                 })

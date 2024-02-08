@@ -1,15 +1,12 @@
 'use client'
 
 import DashboardHeader from '@/components/DashboardHeader'
+import { getCharacters } from '@/utils/characters';
 import { Character } from '@prisma/client';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 
-async function getCharacters() {
-    const response = await fetch('/api/characters');
-    const data = await response.json();
-    return data;
-}
+
 
 export default function Characters() {
     const [characters, setCharacters] = useState<Character[]>([]);

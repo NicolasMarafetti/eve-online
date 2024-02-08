@@ -1,7 +1,8 @@
 export interface Ship {
-    name: string,
-    imageSrc: string,
-    highSlots: number,
-    midSlots: number,
-    lowSlots: number,
+    id: string;
+    name: string;
+    imageSrc: string;
+    highSlots: number;
+    midSlots: number;
+    lowSlots: number;
 }
