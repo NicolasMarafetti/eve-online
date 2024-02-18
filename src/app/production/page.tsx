@@ -1,4 +1,4 @@
-import DashboardHeader from '@/components/DashboardHeader'
+import DashboardHeader from '@/components/Header/DashboardHeader'
 import EquipementsToBuild from '@/components/EquipementsToBuild'
 import ExplorationFits from '@/components/ExplorationDashboard/ExplorationFits'
 import ShipsAttributionTable from '@/components/Production/ShipsAttributionTable'

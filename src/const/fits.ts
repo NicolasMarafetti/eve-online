@@ -1,3 +1,15 @@
+export interface FIT {
+    id: number;
+    name: string;
+    items: {
+        itemId: number;
+        quantity: number;
+    }[];
+    ship: {
+        itemId: number;
+    };
+}
+
 export const FITS = [
     {
         id: 1,

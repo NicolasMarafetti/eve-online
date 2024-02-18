@@ -14,3 +14,29 @@ model Character {
   id   String @id @default(auto()) @map("_id") @db.ObjectId
   name String
 }
+
+model Fit {
+  id      String    @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  FitItem FitItem[]
+}
+
+model FitItem {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  fit    Fit    @relation(fields: [fitId], references: [id])
+  fitId  String @db.ObjectId
+  item   Item   @relation(fields: [itemId], references: [id])
+  itemId String @db.ObjectId
+  quantity Int
+}
+
+model Item {
+  id      String    @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  FitItem FitItem[]
+}
+
+model Station {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+}

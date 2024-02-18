@@ -1,6 +1,6 @@
 'use client'
 
-import DashboardHeader from '@/components/DashboardHeader'
+import DashboardHeader from '@/components/Header/DashboardHeader'
 import { getCharacters } from '@/utils/characters';
 import { Character } from '@prisma/client';
 import Image from 'next/image';

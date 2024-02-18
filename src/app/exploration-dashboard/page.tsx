@@ -1,6 +1,6 @@
 'use client'
 
-import DashboardHeader from '@/components/DashboardHeader';
+import DashboardHeader from '@/components/Header/DashboardHeader';
 import ExplorationCosts from '@/components/ExplorationDashboard/ExplorationCosts';
 import ExplorationFits from '@/components/ExplorationDashboard/ExplorationFits';
 import ExplorationInventory from '@/components/ExplorationDashboard/ExplorationInventory';
