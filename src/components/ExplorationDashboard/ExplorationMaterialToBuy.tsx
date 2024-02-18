@@ -3,7 +3,7 @@ import React from 'react'
 
 export default function ExplorationMaterialToBuy() {
 
-    const [stuffToBuyAtAmar, setStuffToBuyAtAmar] = React.useState<{ [materialId: number]: STUFF_TO_BUY }>(getStuffToBuy(1));
+    const [stuffToBuyAtAmar, setStuffToBuyAtAmar] = React.useState<{ [materialId: number]: STUFF_TO_BUY }>({});
 
     return (
         <div>

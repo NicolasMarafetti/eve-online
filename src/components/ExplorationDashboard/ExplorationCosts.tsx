@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 
 export default function ExplorationCosts() {
 
-    const [stuffToBuy, setStuffToBuy] = useState<{ [materialId: number]: STUFF_TO_BUY }>(getStuffToBuy(1));
+    const [stuffToBuy, setStuffToBuy] = useState<{ [materialId: number]: STUFF_TO_BUY }>();
 
     useEffect(() => {
         getTitaniumPrice();
@@ -17,15 +17,6 @@ export default function ExplorationCosts() {
         const apiResponseRaw = await fetch(`https://esi.evetech.net/latest/markets/10000002/orders/?order_type=sell&region_id=${REGION_IDS.domain}&type_id=34&is_buy_order=false`);
 
         const sellOrders = await apiResponseRaw.json();
-
-        const amarrOrders = sellOrders.filter((order: any) => order.location_id === STATIONS_API_ID.amarr);
-
-        const lowestSellPrice = sellOrders.reduce((acc: number, order: any) => {
-            if (order.price < acc) {
-                return order.price;
-            }
-            return acc;
-        }, sellOrders[0].price);
 
         let locationIds: number[] = [];
         for (let i = 0; i < sellOrders.length; i++) {

@@ -12,7 +12,7 @@ export default function ShipAttributionSelectionableData() {
                 <option></option>
                 {
                     Object.keys(shipsToBuild).map((shipId) => {
-                        const ship = EXPLORATION_ITEMS.find(item => item.id === parseInt(shipId));
+                        const ship = EXPLORATION_ITEMS.find(item => item.id === shipId);
                         if(!ship) return null;
                         return (
                             <option key={shipId} value={shipId}>{ship.name}</option>
