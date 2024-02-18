@@ -11,7 +11,7 @@ interface Props {
 
 export default function AddFitItemModal({ closeModal, fitId, reloadFits }: Props) {
 
-    const [addFitForm, setAddFitForm] = React.useState({ item: '', quantity: 0 });
+    const [addFitForm, setAddFitForm] = React.useState({ item: '', quantity: 1 });
     const [items, setItems] = React.useState<Item[]>([]);
 
     useEffect(() => {
