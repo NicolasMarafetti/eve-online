@@ -12,7 +12,6 @@ interface Props {
 export default function FitItem({ fit, reloadFits }: Props) {
 
     const [addItemModalOpen, setAddItemModalOpen] = React.useState(false);
-    
 
     const addItemClicked = () => {
         setAddItemModalOpen(true);

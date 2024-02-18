@@ -7,7 +7,7 @@ import React from 'react'
 
 export default function Production() {
     return (
-        <div className="h-screen bg-production bg-cover">
+        <div className="h-screen bg-production bg-cover overflow-y-auto">
             <DashboardHeader />
             <h1 className="bg-production-title-background bg-cover font-black text-center text-xl uppercase py-4">Gestion des objets à créer</h1>
             <section className="bg-gradient-to-b from-[#314872] to-[#0f192f] mx-auto w-6/12 mb-5 rounded-xl">

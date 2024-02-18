@@ -35,7 +35,7 @@ export default function Objets() {
     }
 
     return (
-        <div className="h-screen bg-production bg-cover">
+        <div className="h-screen bg-production bg-cover overflow-y-auto">
             <DashboardHeader />
             <h1 className="bg-production-title-background bg-cover font-black text-center text-xl uppercase py-4">Objets</h1>
             <section className="bg-gradient-to-b from-[#314872] to-[#0f192f] mx-auto rounded-xl w-6/12 mb-5">

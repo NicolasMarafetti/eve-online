@@ -5,6 +5,7 @@ import { EXPLORATIONS_MATERIALS } from "@/const/exploration-materials";
 import { EXPORATION_STUFF_PER_BASE } from "@/const/explorationStuffPerBase";
 import { FITS } from "@/const/fits";
 import { Ship } from "@/types/Ship";
+import { FitItem } from "@prisma/client";
 
 export type STUFF_TO_BUY = {
     name: string;
@@ -23,8 +24,8 @@ export const countAllianceStationsNeedingExplorationStuff = () => {
     return ALLIANCE_STATIONS.filter(station => station.needExplorationShips).length;
 }
 
-export const getStuffForFit = (fitId: number): { [itemId: number]: number } | null => {
-    let items: { [itemId: number]: number } = {};
+export const getStuffForFit = (fitId: string): { [itemId: string]: number } | null => {
+    let items: { [itemId: string]: number } = {};
     const fit = FITS.find(fit => fit.id === fitId);
 
     if (!fit) return null;
@@ -44,8 +45,8 @@ export const getStuffForFit = (fitId: number): { [itemId: number]: number } | nu
     return items;
 }
 
-export const getEquipementsToBuild = (): { [stuffId: number]: number } => {
-    const equipements: { [stuffId: number]: number } = {};
+export const getEquipementsToBuild = (): { [stuffId: string]: number } => {
+    const equipements: { [stuffId: string]: number } = {};
 
     // Searching Material to Buy
     ALLIANCE_STATIONS.forEach((station) => {
@@ -76,17 +77,18 @@ export const getEquipementsToBuild = (): { [stuffId: number]: number } => {
     return equipements;
 }
 
-export const getFitItems = (fitId: number) => {
-    return FITS.find(fit => fit.id === fitId)?.items || [];
+export const getFitsItems = async (): Promise<FitItem[]> => {
+    const response = await fetch('/api/fititem');
+    return response.json();
 }
 
-export const getFitMaterialRequired = (fitId: number): { [materialId: number]: { quantity: number } } => {
-    let materialsRequired: { [itemId: number]: { quantity: number } } = {};
+export const getFitMaterialRequired = async (fitId: string): Promise<{ [materialId: string]: { quantity: number } }> => {
+    let materialsRequired: { [itemId: string]: { quantity: number } } = {};
 
-    const fitItems = getFitItems(fitId);
+    const fitsItems = await getFitsItems();
 
-    fitItems.forEach((item) => {
-        const itemMaterialRequired = getItemMaterialRequired(item.itemId);
+    fitsItems.forEach((fitItem) => {
+        const itemMaterialRequired = getItemMaterialRequired(fitItem.itemId);
 
         if (itemMaterialRequired) {
             for (let itemId in itemMaterialRequired) {
@@ -104,7 +106,7 @@ export const getFitMaterialRequired = (fitId: number): { [materialId: number]: {
     return materialsRequired;
 }
 
-const getItemMaterialRequired = (itemId: number): { [itemId: number]: number } | null => {
+const getItemMaterialRequired = (itemId: string): { [itemId: string]: number } | null => {
     const itemBlueprint = EXPLORATION_BLUEPRINTS.find(blueprint => blueprint.itemId === itemId);
 
     if (!itemBlueprint) return null;
@@ -118,7 +120,7 @@ const getItemMaterialRequired = (itemId: number): { [itemId: number]: number } |
     return materialsRequired;
 }
 
-export const getShipForFit = (fitId: number): Ship | null => {
+export const getShipForFit = (fitId: string): Ship | null => {
     const fit = FITS.find(fit => fit.id === fitId);
 
     if (!fit) return null;
@@ -167,25 +169,27 @@ export const getShipsToBuild = (): { [shipId: string]: number } => {
     return ships;
 }
 
-export const getStuffToBuy = (multiplier: number): { [materialId: number]: STUFF_TO_BUY } => {
-    let materialToBuy: { [materialId: number]: STUFF_TO_BUY } = {
+export const getStuffToBuy = async (multiplier: number): Promise<{ [materialId: string]: STUFF_TO_BUY }> => {
+    let materialToBuy: { [materialId: string]: STUFF_TO_BUY } = {
 
     };
 
-    let materialOwned: { [materialId: number]: STUFF_TO_BUY } = {
+    let materialOwned: { [materialId: string]: STUFF_TO_BUY } = {
 
     };
 
     // Searching Material to Buy
-    ALLIANCE_STATIONS.forEach((station) => {
+    for (let i = 0; i < ALLIANCE_STATIONS.length; i++) {
+        const station = ALLIANCE_STATIONS[i];
         if (station.needExplorationShips) {
-            EXPORATION_STUFF_PER_BASE.forEach((stuff) => {
+            for (let y = 0; y < EXPORATION_STUFF_PER_BASE.length; y++) {
+                const stuff = EXPORATION_STUFF_PER_BASE[y];
                 if (stuff.fitId) {
                     const fitQuantityRequired = stuff.quantity;
                     const fitQuantityInStationInventory = searchFitQuantityInStationInventory(station, stuff.fitId);
 
                     if (fitQuantityInStationInventory < fitQuantityRequired * multiplier) {
-                        const fitMaterials = getFitMaterialRequired(stuff.fitId);
+                        const fitMaterials = await getFitMaterialRequired(stuff.fitId);
 
                         for (let materialId in fitMaterials) {
                             if (materialToBuy[materialId]) {
@@ -199,9 +203,9 @@ export const getStuffToBuy = (multiplier: number): { [materialId: number]: STUFF
                         }
                     }
                 }
-            })
+            }
         }
-    })
+    }
 
     // Searching Material Owned
     ALLIANCE_STATIONS.forEach((station) => {
@@ -233,7 +237,7 @@ export const getStuffToBuy = (multiplier: number): { [materialId: number]: STUFF
     return materialToBuy;
 }
 
-const searchFitQuantityInStationInventory = (station: STATION, fitId: number) => {
+const searchFitQuantityInStationInventory = (station: STATION, fitId: string) => {
     const inventoryItem = station.inventory.find(inventoryItem => inventoryItem.fitId === fitId);
 
     return inventoryItem ? inventoryItem.quantity : 0;

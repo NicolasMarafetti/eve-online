@@ -26,7 +26,7 @@ export default function StationsList({ fits, getInitialStations, stations }: Pro
                             <p className="text-white">{station.name}</p>
                             <button onClick={() => { deleteStation(station.id) }}><FaTimes /></button>
                         </div>
-                        <StationFitsList fits={fits} station={station} />
+                        <StationFitsList stationId={station.id} />
                     </li>
                 ))
             }

@@ -11,7 +11,7 @@ import { getFitItems } from '@/utils/fit-item';
 export default function Fits() {
 
     const [addModalOpen, setAddModalOpen] = React.useState(false);
-    
+
     const [fits, setFits] = React.useState<Fit[]>([]);
 
     useEffect(() => {
@@ -36,13 +36,13 @@ export default function Fits() {
     }
 
     return (
-        <div className="h-screen bg-production bg-cover">
+        <div className="h-screen bg-production bg-cover overflow-y-auto">
             <DashboardHeader />
             <h1 className="bg-production-title-background bg-cover font-black text-center text-xl uppercase py-4">Fits</h1>
             <section className="bg-gradient-to-b from-[#314872] to-[#0f192f] mx-auto rounded-xl w-6/12 mb-5">
                 <h2 className="bg-production-section-title-background bg-cover font-bold py-3 px-4 uppercase">Fits</h2>
                 <FitsList reloadFits={getInitialFits} fits={fits} />
-                
+
                 <button onClick={addClicked}>Ajouter</button>
             </section>
             {addModalOpen && <AddFitModal closeModal={closeModal} fitAdded={fitAdded} />}

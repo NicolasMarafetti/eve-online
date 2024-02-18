@@ -1,7 +1,6 @@
-import { FitItemWithFitAndItems } from '@/types/FitItem';
-import { FitItem } from '@prisma/client';
-import { isArray } from 'lodash';
-import React, { useEffect } from 'react'
+import { useFitItemsContext } from '@/context/fitItems';
+import { useItemsContext } from '@/context/items';
+import React from 'react'
 
 interface Props {
     fitId: string;
@@ -9,23 +8,21 @@ interface Props {
 
 export default function FitItems({ fitId }: Props) {
 
-    const [fitItems, setFitItems] = React.useState<FitItemWithFitAndItems[]>([]);
-
-    useEffect(() => {
-        const getFitItems = async () => {
-            const response = await fetch(`/api/fititem/${fitId}`);
-            const data = await response.json();
-
-            if (!isArray(data)) return;
-
-            setFitItems(data);
-        }
-        getFitItems();
-    }, [fitId]);
+    const { items } = useItemsContext();
+    const { fitItems } = useFitItemsContext();
 
     return (
         <ul>
-            {fitItems.map(fitItem => <li key={fitItem.id}>{fitItem.item.name} x {fitItem.quantity}</li>)}
+            {fitItems.map(fitItem => {
+                if(fitItem.fitId !== fitId) return null;
+
+                const item = items.find(item => item.id === fitItem.itemId);
+                if(!item) return null;
+
+                return (
+                    <li className="text-sm text-gray-500" key={fitItem.id}>{item.name} x {fitItem.quantity}</li>
+                )
+            })}
         </ul>
     )
 }

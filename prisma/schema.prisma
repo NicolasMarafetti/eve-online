@@ -16,17 +16,18 @@ model Character {
 }
 
 model Fit {
-  id      String    @id @default(auto()) @map("_id") @db.ObjectId
-  name    String
-  FitItem FitItem[]
+  id         String       @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  FitItem    FitItem[]
+  StationFit StationFit[]
 }
 
 model FitItem {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  fit    Fit    @relation(fields: [fitId], references: [id])
-  fitId  String @db.ObjectId
-  item   Item   @relation(fields: [itemId], references: [id])
-  itemId String @db.ObjectId
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  fit      Fit    @relation(fields: [fitId], references: [id])
+  fitId    String @db.ObjectId
+  item     Item   @relation(fields: [itemId], references: [id])
+  itemId   String @db.ObjectId
   quantity Int
 }
 
@@ -37,6 +38,18 @@ model Item {
 }
 
 model Station {
-  id   String @id @default(auto()) @map("_id") @db.ObjectId
-  name String
+  id         String       @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  StationFit StationFit[]
+}
+
+model StationFit {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  station   Station @relation(fields: [stationId], references: [id])
+  stationId String  @db.ObjectId
+  fit       Fit     @relation(fields: [fitId], references: [id])
+  fitId     String  @db.ObjectId
+  quantity  Int
+
+  @@unique([stationId, fitId], name: "station_fit_unique")
 }

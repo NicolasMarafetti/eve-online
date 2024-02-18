@@ -3,6 +3,10 @@ import { Quantico } from "next/font/google";
 import "./globals.css";
 import { FiltersProvider } from "@/context/filters";
 import { ShipsProvider } from "@/context/shipsToBuild";
+import { FitItemsProvider } from "@/context/fitItems";
+import { ItemsProvider } from "@/context/items";
+import { FitsProvider } from "@/context/fits";
+import { StationFitsProvider } from "@/context/stationFits";
 
 const quantico = Quantico({ subsets: ["latin"], weight: "400" });
 
@@ -21,7 +25,15 @@ export default function RootLayout({
       <body className={`${quantico.className} overflow-hidden`}>
         <FiltersProvider>
           <ShipsProvider>
-            {children}
+            <FitItemsProvider>
+              <ItemsProvider>
+                <FitsProvider>
+                  <StationFitsProvider>
+                    {children}
+                  </StationFitsProvider>
+                </FitsProvider>
+              </ItemsProvider>
+            </FitItemsProvider>
           </ShipsProvider>
         </FiltersProvider>
       </body>

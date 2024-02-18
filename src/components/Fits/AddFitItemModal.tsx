@@ -1,3 +1,4 @@
+import { useFitItemsContext } from '@/context/fitItems';
 import { getItems } from '@/utils/item';
 import { Item } from '@prisma/client';
 import React, { useEffect } from 'react'
@@ -10,6 +11,8 @@ interface Props {
 }
 
 export default function AddFitItemModal({ closeModal, fitId, reloadFits }: Props) {
+
+    const { refreshFitItems } = useFitItemsContext();
 
     const [addFitForm, setAddFitForm] = React.useState({ item: '', quantity: 1 });
     const [items, setItems] = React.useState<Item[]>([]);
@@ -36,7 +39,7 @@ export default function AddFitItemModal({ closeModal, fitId, reloadFits }: Props
                 quantity: addFitForm.quantity            
             })
         });
-        await reloadFits();
+        await refreshFitItems();
         closeModal();
     }
 

@@ -1,26 +1,18 @@
-import { Fit, Station } from '@prisma/client';
-import React, { useState } from 'react'
+import React from 'react'
+import StationFitItem from './StationFitItem';
+import { useFitsContext } from '@/context/fits';
 
 interface Props {
-    fits: Fit[];
-    station: Station;
+    stationId: string;
 }
 
-export default function StationFitsList({ fits, station }: Props) {
+export default function StationFitsList({ stationId }: Props) {
 
-    const [stationFit, setStationFit] = useState<any>(null);
-
-    const stationFitQuantity = stationFit ? stationFit.quantity : 0;
+    const { fits } = useFitsContext();
 
     return (
         <ul className="text-sm text-gray-500">
-            {fits.map(fit => (
-                <li className="my-2" key={fit.id}>
-                    <span className="mr-2">{fit.name}</span>
-                    <span className="mr-1">x</span>
-                    <input className="bg-transparent border px-1 w-14" type="number" />
-                </li>
-            ))}
+            {fits.map(fit => <StationFitItem key={fit.id} fitId={fit.id} stationId={stationId} />)}
         </ul>
     )
 }

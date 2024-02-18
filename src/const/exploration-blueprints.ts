@@ -1,6 +1,6 @@
 export const EXPLORATION_BLUEPRINTS = [
     {
-        itemId: 1,
+        itemId: "1",
         quantity: 1,
         materials: [
             {
@@ -26,7 +26,7 @@ export const EXPLORATION_BLUEPRINTS = [
         ]
     },
     {
-        itemId: 2,
+        itemId: "2",
         quantity: 1,
         materials: [
             {
@@ -44,7 +44,7 @@ export const EXPLORATION_BLUEPRINTS = [
         ]
     },
     {
-        itemId: 3,
+        itemId: "3",
         quantity: 1,
         materials: [
             {
@@ -58,7 +58,7 @@ export const EXPLORATION_BLUEPRINTS = [
         ]
     },
     {
-        itemId: 4,
+        itemId: "4",
         quantity: 1,
         materials: [
             {
@@ -84,7 +84,7 @@ export const EXPLORATION_BLUEPRINTS = [
         ]
     },
     {
-        itemId: 5,
+        itemId: "5",
         quantity: 1,
         materials: [
             {
@@ -110,7 +110,7 @@ export const EXPLORATION_BLUEPRINTS = [
         ]
     },
     {
-        itemId: 6,
+        itemId: "6",
         quantity: 1,
         materials: [
             {
@@ -128,7 +128,7 @@ export const EXPLORATION_BLUEPRINTS = [
         ]
     },
     {
-        itemId: 7,
+        itemId: "7",
         quantity: 1,
         materials: [
             {
@@ -150,7 +150,7 @@ export const EXPLORATION_BLUEPRINTS = [
         ]
     },
     {
-        itemId: 8,
+        itemId: "8",
         quantity: 1,
         materials: [
             {
@@ -164,7 +164,7 @@ export const EXPLORATION_BLUEPRINTS = [
         ]
     },
     {
-        itemId: 9,
+        itemId: "9",
         quantity: 1,
         materials: [
             {
@@ -190,7 +190,7 @@ export const EXPLORATION_BLUEPRINTS = [
         ]
     },
     {
-        itemId: 10,
+        itemId: "10",
         quantity: 1,
         materials: [
             {
@@ -220,7 +220,7 @@ export const EXPLORATION_BLUEPRINTS = [
         ]
     },
     {
-        itemId: 11,
+        itemId: "11",
         quantity: 1,
         materials: [
             {
@@ -250,7 +250,7 @@ export const EXPLORATION_BLUEPRINTS = [
         ]
     },
     {
-        itemId: 12,
+        itemId: "12",
         quantity: 1,
         materials: [
             {
@@ -268,7 +268,7 @@ export const EXPLORATION_BLUEPRINTS = [
         ]
     },
     {
-        itemId: 13,
+        itemId: "13",
         quantity: 1,
         materials: [
             {
@@ -286,7 +286,7 @@ export const EXPLORATION_BLUEPRINTS = [
         ]
     },
     {
-        itemId: 14,
+        itemId: "14",
         quantity: 1,
         materials: [
             {

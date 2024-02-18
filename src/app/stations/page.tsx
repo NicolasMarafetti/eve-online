@@ -50,13 +50,13 @@ export default function Stations() {
     }
 
     return (
-        <div className="h-screen bg-production bg-cover">
+        <div className="h-screen bg-production bg-cover overflow-y-auto">
             <DashboardHeader />
             <h1 className="bg-production-title-background bg-cover font-black text-center text-xl uppercase py-4">Stations</h1>
             <section className="bg-gradient-to-b from-[#314872] to-[#0f192f] mx-auto rounded-xl w-6/12 mb-5">
                 <h2 className="bg-production-section-title-background bg-cover font-bold py-3 px-4 uppercase">Stations</h2>
                 <StationsList getInitialStations={getInitialStations} fits={fits} stations={stations} />
-                
+
                 <button onClick={addClicked}>Ajouter</button>
             </section>
             {
