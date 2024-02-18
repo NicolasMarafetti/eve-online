@@ -1,9 +1,8 @@
-import { FIT } from '@/const/fits';
-import { Station } from '@prisma/client';
+import { Fit, Station } from '@prisma/client';
 import React, { useState } from 'react'
 
 interface Props {
-    fits: FIT[];
+    fits: Fit[];
     station: Station;
 }
 

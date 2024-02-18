@@ -1,11 +1,10 @@
-import { FIT } from '@/const/fits';
-import { Station } from '@prisma/client';
+import { Fit, Station } from '@prisma/client';
 import React from 'react'
 import { FaTimes } from 'react-icons/fa'
 import StationFitsList from './StationFitsList';
 
 interface Props {
-    fits: FIT[];
+    fits: Fit[];
     getInitialStations: () => void;
     stations: Station[];
 }

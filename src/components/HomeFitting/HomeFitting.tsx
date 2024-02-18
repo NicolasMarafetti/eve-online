@@ -14,6 +14,7 @@ export const HomeFitting = () => {
 
     const [simulationInProgress, setSimulationInProgress] = useState<boolean>(false);
     const [ship, setShip] = useState<Ship>({
+        id: "1",
         name: "Omen",
         imageSrc: "/images/ships/omen.jpeg",
         highSlots: 5,

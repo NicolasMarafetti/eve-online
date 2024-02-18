@@ -2,10 +2,9 @@
 
 import DashboardHeader from '@/components/Header/DashboardHeader'
 import StationsList from '@/components/Stations/StationsList';
-import { FIT } from '@/const/fits';
 import { getFits } from '@/utils/fit';
 import { getStations } from '@/utils/stations'
-import { Station } from '@prisma/client';
+import { Fit, Station } from '@prisma/client';
 import React, { useEffect } from 'react'
 import { FaTimes } from 'react-icons/fa';
 
@@ -13,7 +12,7 @@ export default function Stations() {
 
     const [addModalOpen, setAddModalOpen] = React.useState(false);
     const [addStationForm, setAddStationForm] = React.useState({ name: '' });
-    const [fits, setFits] = React.useState<FIT[]>([]);
+    const [fits, setFits] = React.useState<Fit[]>([]);
     const [stations, setStations] = React.useState<Station[]>([])
 
     useEffect(() => {
@@ -43,7 +42,7 @@ export default function Stations() {
     }
 
     const getInitialFits = async () => {
-        setFits(getFits());
+        setFits(await getFits());
     }
 
     const getInitialStations = async () => {
