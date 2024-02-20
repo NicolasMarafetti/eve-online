@@ -22,7 +22,6 @@ export const BlueprintMaterialsProvider = ({ children }: any) => {
     }, [])
 
     const refreshBlueprintMaterials = async () => {
-        console.log("Refresh fit");
         setBlueprintMaterials(await getBlueprintMaterials());
     }
 

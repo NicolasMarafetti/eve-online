@@ -11,7 +11,7 @@ interface ShipContextType {
 
 const FitItemsContext = createContext<ShipContextType>({
     fitItems: [],
-    refreshFitItems: () => {}
+    refreshFitItems: () => { }
 });
 
 export const FitItemsProvider = ({ children }: any) => {
@@ -22,7 +22,6 @@ export const FitItemsProvider = ({ children }: any) => {
     }, [])
 
     const refreshFitItems = async () => {
-        console.log("Refresh fit");
         setFitItems(await getFitsItems());
     }
 
