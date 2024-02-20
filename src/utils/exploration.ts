@@ -5,7 +5,8 @@ import { EXPLORATIONS_MATERIALS } from "@/const/exploration-materials";
 import { EXPORATION_STUFF_PER_BASE } from "@/const/explorationStuffPerBase";
 import { FITS } from "@/const/fits";
 import { Ship } from "@/types/Ship";
-import { FitItem } from "@prisma/client";
+import { FitItem, StationFit } from "@prisma/client";
+import { getFitsToProduces } from "./fit";
 
 export type STUFF_TO_BUY = {
     name: string;
@@ -24,55 +25,40 @@ export const countAllianceStationsNeedingExplorationStuff = () => {
     return ALLIANCE_STATIONS.filter(station => station.needExplorationShips).length;
 }
 
-export const getStuffForFit = (fitId: string): { [itemId: string]: number } | null => {
+export const getStuffForFit = (fitId: string, fitItems: FitItem[]): { [itemId: string]: number } | null => {
     let items: { [itemId: string]: number } = {};
-    const fit = FITS.find(fit => fit.id === fitId);
 
-    if (!fit) return null;
-
-    fit.items.forEach((fitItem) => {
-        const item = EXPLORATION_ITEMS.find(item => item.id === fitItem.itemId);
-
-        if (item) {
-            if (items[item.id]) {
-                items[item.id] += fitItem.quantity;
+    fitItems.forEach((fitItem) => {
+        if (fitItem.fitId === fitId) {
+            if (items[fitItem.itemId]) {
+                items[fitItem.itemId] += fitItem.quantity;
             } else {
-                items[item.id] = fitItem.quantity;
+                items[fitItem.itemId] = fitItem.quantity;
             }
         }
-    });
+    })
 
     return items;
 }
 
-export const getEquipementsToBuild = (): { [stuffId: string]: number } => {
+export const getEquipementsToBuild = (fitItems: FitItem[], stationFits: StationFit[]): { [stuffId: string]: number } => {
     const equipements: { [stuffId: string]: number } = {};
 
-    // Searching Material to Buy
-    ALLIANCE_STATIONS.forEach((station) => {
-        if (station.needExplorationShips) {
-            EXPORATION_STUFF_PER_BASE.forEach((stuff) => {
-                if (stuff.fitId) {
-                    const fitQuantityRequired = stuff.quantity;
-                    const fitQuantityInStationInventory = searchFitQuantityInStationInventory(station, stuff.fitId);
+    const fitsToProduct = getFitsToProduces(stationFits);
 
-                    if (fitQuantityInStationInventory < fitQuantityRequired) {
-                        const stuffs = getStuffForFit(stuff.fitId);
+    for (let fitId in fitsToProduct) {
+        const stuffs = getStuffForFit(fitId, fitItems);
 
-                        if (!stuffs) return;
-
-                        for (let stuffId in stuffs) {
-                            if (equipements[stuffId]) {
-                                equipements[stuffId] += stuffs[stuffId] * (fitQuantityRequired - fitQuantityInStationInventory);
-                            } else {
-                                equipements[stuffId] = stuffs[stuffId] * (fitQuantityRequired - fitQuantityInStationInventory);
-                            }
-                        }
-                    }
+        if (stuffs) {
+            for (let stuffId in stuffs) {
+                if (equipements[stuffId]) {
+                    equipements[stuffId] += stuffs[stuffId] * fitsToProduct[fitId];
+                } else {
+                    equipements[stuffId] = stuffs[stuffId] * fitsToProduct[fitId];
                 }
-            })
+            }
         }
-    })
+    }
 
     return equipements;
 }

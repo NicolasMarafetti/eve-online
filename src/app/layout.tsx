@@ -7,6 +7,11 @@ import { FitItemsProvider } from "@/context/fitItems";
 import { ItemsProvider } from "@/context/items";
 import { FitsProvider } from "@/context/fits";
 import { StationFitsProvider } from "@/context/stationFits";
+import { CharactersProvider } from "@/context/characters";
+import { StationsProvider } from "@/context/stations";
+import { ProductionsProvider } from "@/context/productions";
+import { BlueprintsProvider } from "@/context/blueprints";
+import { BlueprintMaterialsProvider } from "@/context/blueprintMaterials";
 
 const quantico = Quantico({ subsets: ["latin"], weight: "400" });
 
@@ -29,7 +34,17 @@ export default function RootLayout({
               <ItemsProvider>
                 <FitsProvider>
                   <StationFitsProvider>
-                    {children}
+                    <CharactersProvider>
+                      <StationsProvider>
+                        <ProductionsProvider>
+                          <BlueprintsProvider>
+                            <BlueprintMaterialsProvider>
+                              {children}
+                            </BlueprintMaterialsProvider>
+                          </BlueprintsProvider>
+                        </ProductionsProvider>
+                      </StationsProvider>
+                    </CharactersProvider>
                   </StationFitsProvider>
                 </FitsProvider>
               </ItemsProvider>

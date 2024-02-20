@@ -1,18 +1,16 @@
-import { Item } from '@prisma/client';
+import { useItemsContext } from '@/context/items';
 import React from 'react'
 import { FaTimes } from 'react-icons/fa'
 
-interface Props {
-    getInitialItems: () => void;
-    items: Item[];
-}
+export default function ItemsList() {
 
-export default function ItemsList({ getInitialItems, items }: Props) {
+    const { items, refreshItems } = useItemsContext();
+
     const deleteItem = async (id: string) => {
         await fetch(`/api/items/${id}`, {
             method: 'DELETE'
         });
-        getInitialItems();
+        refreshItems();
     }
 
     return (

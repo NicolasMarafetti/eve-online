@@ -2,23 +2,16 @@
 
 import DashboardHeader from '@/components/Header/DashboardHeader'
 import StationsList from '@/components/Stations/StationsList';
-import { getFits } from '@/utils/fit';
-import { getStations } from '@/utils/stations'
-import { Fit, Station } from '@prisma/client';
-import React, { useEffect } from 'react'
+import { useStationsContext } from '@/context/stations';
+import React from 'react'
 import { FaTimes } from 'react-icons/fa';
 
 export default function Stations() {
 
+    const { refreshStations } = useStationsContext();
+
     const [addModalOpen, setAddModalOpen] = React.useState(false);
     const [addStationForm, setAddStationForm] = React.useState({ name: '' });
-    const [fits, setFits] = React.useState<Fit[]>([]);
-    const [stations, setStations] = React.useState<Station[]>([])
-
-    useEffect(() => {
-        getInitialFits();
-        getInitialStations();
-    }, [])
 
     const addClicked = () => {
         setAddModalOpen(true);
@@ -37,16 +30,8 @@ export default function Stations() {
             },
             body: JSON.stringify(addStationForm)
         });
-        await getInitialStations();
         setAddModalOpen(false);
-    }
-
-    const getInitialFits = async () => {
-        setFits(await getFits());
-    }
-
-    const getInitialStations = async () => {
-        setStations(await getStations());
+        refreshStations();
     }
 
     return (
@@ -55,7 +40,7 @@ export default function Stations() {
             <h1 className="bg-production-title-background bg-cover font-black text-center text-xl uppercase py-4">Stations</h1>
             <section className="bg-gradient-to-b from-[#314872] to-[#0f192f] mx-auto rounded-xl w-6/12 mb-5">
                 <h2 className="bg-production-section-title-background bg-cover font-bold py-3 px-4 uppercase">Stations</h2>
-                <StationsList getInitialStations={getInitialStations} fits={fits} stations={stations} />
+                <StationsList />
 
                 <button onClick={addClicked}>Ajouter</button>
             </section>

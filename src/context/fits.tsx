@@ -1,6 +1,5 @@
 'use client'
 
-import { getFitsItems } from "@/utils/exploration";
 import { getFits } from "@/utils/fit";
 import { Fit } from "@prisma/client";
 import { createContext, useContext, useEffect, useState } from "react";

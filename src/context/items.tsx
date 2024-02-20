@@ -5,10 +5,12 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 interface ShipContextType {
     items: Item[];
+    refreshItems: () => void;
 }
 
 const ItemsContext = createContext<ShipContextType>({
-    items: []
+    items: [],
+    refreshItems: () => { }
 });
 
 export const ItemsProvider = ({ children }: any) => {
@@ -27,7 +29,8 @@ export const ItemsProvider = ({ children }: any) => {
     return (
         <ItemsContext.Provider
             value={{
-                items
+                items,
+                refreshItems
             }}
         >
             {children}

@@ -10,9 +10,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Blueprint {
+  id                String              @id @default(auto()) @map("_id") @db.ObjectId
+  itemCreated       Item                @relation(fields: [itemCreatedId], references: [id])
+  itemCreatedId     String              @db.ObjectId
+  quantity          Int
+  BlueprintMaterial BlueprintMaterial[]
+}
+
+model BlueprintMaterial {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  blueprint   Blueprint @relation(fields: [blueprintId], references: [id])
+  blueprintId String    @db.ObjectId
+  item        Item      @relation(fields: [itemId], references: [id])
+  itemId      String    @db.ObjectId
+  quantity    Int
+}
+
 model Character {
-  id   String @id @default(auto()) @map("_id") @db.ObjectId
-  name String
+  id         String       @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  Production Production[]
 }
 
 model Fit {
@@ -32,15 +50,29 @@ model FitItem {
 }
 
 model Item {
-  id      String    @id @default(auto()) @map("_id") @db.ObjectId
-  name    String
-  FitItem FitItem[]
+  id                String              @id @default(auto()) @map("_id") @db.ObjectId
+  name              String
+  FitItem           FitItem[]
+  Production        Production[]
+  Blueprint         Blueprint[]
+  BlueprintMaterial BlueprintMaterial[]
+}
+
+model Production {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  character   Character? @relation(fields: [characterId], references: [id])
+  characterId String?    @db.ObjectId
+  item        Item       @relation(fields: [itemId], references: [id])
+  itemId      String     @db.ObjectId
+  station     Station?   @relation(fields: [stationId], references: [id])
+  stationId   String?    @db.ObjectId
 }
 
 model Station {
   id         String       @id @default(auto()) @map("_id") @db.ObjectId
   name       String
   StationFit StationFit[]
+  Production Production[]
 }
 
 model StationFit {
