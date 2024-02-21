@@ -15,6 +15,7 @@ model Blueprint {
   itemCreated       Item                @relation(fields: [itemCreatedId], references: [id])
   itemCreatedId     String              @db.ObjectId
   quantity          Int
+  duration          Int                @default(0)
   BlueprintMaterial BlueprintMaterial[]
 }
 

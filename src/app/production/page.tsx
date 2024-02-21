@@ -14,7 +14,6 @@ export default function Production() {
             <section className="bg-gradient-to-b from-[#314872] to-[#0f192f] mx-auto rounded-xl w-6/12 mb-5">
                 <h2 className="bg-production-section-title-background bg-cover font-bold py-3 px-4 uppercase">Equipements</h2>
                 <EquipementsToBuild />
-                
             </section>
         </div>
     )
