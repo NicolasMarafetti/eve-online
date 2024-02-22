@@ -29,7 +29,7 @@ export default function EquipmentTableCharaterCell({ itemId }: Props) {
     return (
         <td className="px-1">
             <select className="text-black" onChange={characterChanged} value={characterSelected}>
-                <option value="">Select a character</option>
+                <option value="">Personnage</option>
                 {
                     characters.map(character => (
                         <option key={character.id} value={character.id}>{character.name}</option>

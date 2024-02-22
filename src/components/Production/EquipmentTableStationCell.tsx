@@ -27,8 +27,8 @@ export default function EquipmentTableStationCell({ itemId }: Props) {
     const stationSelected = (production && production.stationId) ? production.stationId : '';
 
     return (
-        <td className="px-1 max-w-20">
-            <select className="text-black" onChange={stationChanged} value={stationSelected}>
+        <td className="px-1 max-w-32">
+            <select className="text-black max-w-full" onChange={stationChanged} value={stationSelected}>
                 <option value="">Select a station</option>
                 {
                     stations.map(station => (

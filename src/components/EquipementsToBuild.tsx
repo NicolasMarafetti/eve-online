@@ -9,13 +9,25 @@ import EquipmentTableCharaterCell from './Production/EquipmentTableCharaterCell'
 import EquipmentTableStationCell from './Production/EquipmentTableStationCell';
 import { useBlueprintsContext } from '@/context/blueprints';
 import { getBlueprintHours, getBlueprintMinutes, getBlueprintSeconds } from '@/utils/blueprint';
+import { searchItemQuantityInStation, updateStationItemQuantity } from '@/utils/station-item';
+import { useProductionsContext } from '@/context/productions';
+import { useStationItemsContext } from '@/context/stationItems';
+
+interface ItemForEquipmentTable {
+    itemId: string;
+    quantityOwned: number;
+    quantityToBuild: number;
+    duration: number;
+}
 
 export default function EquipementsToBuild() {
 
     const { blueprints } = useBlueprintsContext();
     const { items } = useItemsContext();
     const { fitItems } = useFitItemsContext();
+    const { productions } = useProductionsContext();
     const { stationFits } = useStationFitsContext();
+    const { stationItems, refreshStationItems } = useStationItemsContext();
 
     const [itemsToBuild, setItemsToBuild] = useState<{ [itemId: string]: number }>({});
 
@@ -34,12 +46,27 @@ export default function EquipementsToBuild() {
         return blueprint.duration * quantity;
     }
 
+    const stationItemQuantityBlured = async (event: React.FocusEvent<HTMLInputElement>, itemId: string) => {
+        const production = productions.find(production => production.itemId === itemId);
+        if (!production || !production.stationId) return;
+
+        await updateStationItemQuantity(production.stationId, itemId, parseInt(event.target.value));
+        refreshStationItems();
+    }
+
     // Add item production duration to items
-    let itemsWithDuration = Object.keys(itemsToBuild).map(itemId => ({
-        itemId,
-        quantity: itemsToBuild[itemId],
-        duration: itemProductionDuration(itemId, itemsToBuild[itemId]),
-    })).sort((a, b) => b.duration - a.duration); // Sorting in descending order of duration
+    let itemsWithDuration: ItemForEquipmentTable[] = Object.keys(itemsToBuild).map(itemId => {
+        const quantityOwned = searchItemQuantityInStation(itemId, productions, stationItems);
+
+        const quantityToBuild = itemsToBuild[itemId] - quantityOwned;
+
+        return {
+            itemId,
+            quantityToBuild,
+            quantityOwned,
+            duration: itemProductionDuration(itemId, quantityToBuild),
+        }
+    }).sort((a, b) => b.duration - a.duration); // Sorting in descending order of duration
 
     return (
         <table>
@@ -47,22 +74,29 @@ export default function EquipementsToBuild() {
                 <tr>
                     <th className="px-1">Item</th>
                     <th className="px-1">Durée</th>
-                    <th className="px-1">Quantity</th>
+                    <th className="px-1">Quantity to build</th>
+                    <th className="px-1">Quantity in stock</th>
                     <th className="px-1">Character</th>
                     <th className="px-1">Station</th>
                 </tr>
             </thead>
             <tbody>
                 {
-                    itemsWithDuration.map(({ itemId, quantity, duration }) => {
+                    itemsWithDuration.map(({ itemId, quantityToBuild, quantityOwned, duration }) => {
                         const item = items.find(item => item.id === itemId);
                         if (!item) return null;
 
+                        const production = productions.find(production => production.itemId === itemId);
+                        if (!production || !production.stationId) return;
+
+                        const itemsOwnedInStation = stationItems.find(stationItem => stationItem.itemId === itemId && stationItem.stationId === production.stationId);
+
                         return (
-                            <tr key={itemId}>
-                                <td className="px-1">{item.name}</td>
+                            <tr className="border-y border-white border-dashed" key={itemId}>
+                                <td className="px-1 py-2">{item.name}</td>
                                 <td>{getBlueprintHours(duration)}:{getBlueprintMinutes(duration)}:{getBlueprintSeconds(duration)}</td>
-                                <td className="px-1">{quantity.toLocaleString()}</td>
+                                <td className="px-1">{quantityToBuild.toLocaleString()}</td>
+                                <td className="px-1"><input className="text-black w-10" onBlur={(e) => stationItemQuantityBlured(e, itemId)} type="number" defaultValue={quantityOwned} /></td>
                                 <EquipmentTableCharaterCell itemId={itemId} />
                                 <EquipmentTableStationCell itemId={itemId} />
                             </tr>

@@ -15,7 +15,7 @@ model Blueprint {
   itemCreated       Item                @relation(fields: [itemCreatedId], references: [id])
   itemCreatedId     String              @db.ObjectId
   quantity          Int
-  duration          Int                @default(0)
+  duration          Int                 @default(0)
   BlueprintMaterial BlueprintMaterial[]
 }
 
@@ -57,6 +57,7 @@ model Item {
   Production        Production[]
   Blueprint         Blueprint[]
   BlueprintMaterial BlueprintMaterial[]
+  StationItem       StationItem[]
 }
 
 model Production {
@@ -70,10 +71,11 @@ model Production {
 }
 
 model Station {
-  id         String       @id @default(auto()) @map("_id") @db.ObjectId
-  name       String
-  StationFit StationFit[]
-  Production Production[]
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  StationFit  StationFit[]
+  Production  Production[]
+  StationItem StationItem[]
 }
 
 model StationFit {
@@ -85,4 +87,13 @@ model StationFit {
   quantity  Int
 
   @@unique([stationId, fitId], name: "station_fit_unique")
+}
+
+model StationItem {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  station   Station @relation(fields: [stationId], references: [id])
+  stationId String  @db.ObjectId
+  item      Item    @relation(fields: [itemId], references: [id])
+  itemId    String  @db.ObjectId
+  quantity  Int
 }

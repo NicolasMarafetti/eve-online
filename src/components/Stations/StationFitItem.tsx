@@ -40,7 +40,7 @@ export default function StationFitItem({ fitId, stationId }: Props) {
 
     const fit = fits.find(fit => fit.id === fitId);
 
-    if(!fit) return null;
+    if(!fit || stationFitQuantity === 0) return null;
 
     return (
         <li className="my-2">

@@ -12,6 +12,7 @@ import { StationsProvider } from "@/context/stations";
 import { ProductionsProvider } from "@/context/productions";
 import { BlueprintsProvider } from "@/context/blueprints";
 import { BlueprintMaterialsProvider } from "@/context/blueprintMaterials";
+import { StationItemsProvider } from "@/context/stationItems";
 
 const quantico = Quantico({ subsets: ["latin"], weight: "400" });
 
@@ -39,7 +40,9 @@ export default function RootLayout({
                         <ProductionsProvider>
                           <BlueprintsProvider>
                             <BlueprintMaterialsProvider>
-                              {children}
+                              <StationItemsProvider>
+                                {children}
+                              </StationItemsProvider>
                             </BlueprintMaterialsProvider>
                           </BlueprintsProvider>
                         </ProductionsProvider>

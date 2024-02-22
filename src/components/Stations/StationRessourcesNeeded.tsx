@@ -1,5 +1,4 @@
-import React from 'react'
-import StationFitItem from './StationFitItem';
+import React from 'react';
 import { getStationRessourcesNeeded } from '@/utils/stations';
 import { useProductionsContext } from '@/context/productions';
 import { useFitItemsContext } from '@/context/fitItems';
