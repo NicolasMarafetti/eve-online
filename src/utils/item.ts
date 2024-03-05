@@ -1,3 +1,10 @@
+export const cleanItemsDoublon = () => {
+    fetch(`/api/items/clean_doublon`, {
+        method: 'DELETE'
+    })
+
+}
+
 export const getItems = async () => {
     const response = await fetch(`/api/items`);
     return response.json();

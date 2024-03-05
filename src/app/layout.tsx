@@ -13,6 +13,8 @@ import { ProductionsProvider } from "@/context/productions";
 import { BlueprintsProvider } from "@/context/blueprints";
 import { BlueprintMaterialsProvider } from "@/context/blueprintMaterials";
 import { StationItemsProvider } from "@/context/stationItems";
+import { RegionsProvider } from "@/context/regions";
+import { ItemPricesProvider } from "@/context/itemsPrices";
 
 const quantico = Quantico({ subsets: ["latin"], weight: "400" });
 
@@ -28,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${quantico.className} overflow-hidden`}>
+      <body className={`${quantico.className}`}>
         <FiltersProvider>
           <ShipsProvider>
             <FitItemsProvider>
@@ -41,7 +43,11 @@ export default function RootLayout({
                           <BlueprintsProvider>
                             <BlueprintMaterialsProvider>
                               <StationItemsProvider>
-                                {children}
+                                <RegionsProvider>
+                                  <ItemPricesProvider>
+                                    {children}
+                                  </ItemPricesProvider>
+                                </RegionsProvider>
                               </StationItemsProvider>
                             </BlueprintMaterialsProvider>
                           </BlueprintsProvider>

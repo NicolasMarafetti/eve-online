@@ -53,11 +53,26 @@ model FitItem {
 model Item {
   id                String              @id @default(auto()) @map("_id") @db.ObjectId
   name              String
+  eve_api_item_id   Int?                @unique
   FitItem           FitItem[]
   Production        Production[]
   Blueprint         Blueprint[]
   BlueprintMaterial BlueprintMaterial[]
   StationItem       StationItem[]
+  ItemPrice         ItemPrice[]
+}
+
+model ItemPrice {
+  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
+  item                Item     @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  itemId              String   @db.ObjectId
+  region              Region   @relation(fields: [regionId], references: [id])
+  regionId            String   @db.ObjectId
+  averagePrice        Float
+  averageVolumePerDay Float
+  highestBuyPrice     Float?
+  lowestSellPrice     Float?
+  timestamp           DateTime @default(now())
 }
 
 model Production {
@@ -68,6 +83,13 @@ model Production {
   itemId      String     @db.ObjectId
   station     Station?   @relation(fields: [stationId], references: [id])
   stationId   String?    @db.ObjectId
+}
+
+model Region {
+  id         String      @id @default(auto()) @map("_id") @db.ObjectId
+  eve_api_id Int         @unique
+  name       String
+  ItemPrice  ItemPrice[]
 }
 
 model Station {
