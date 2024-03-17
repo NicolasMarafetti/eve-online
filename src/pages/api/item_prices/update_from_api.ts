@@ -8,7 +8,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const { item_id, region_id } = req.query;
 
         if (!item_id) {
-            refreshAllRegionItemsPrices(region_id as string, res);
+            const itemsRecoveredQuantity = await refreshAllRegionItemsPrices(region_id as string, res);
+            return res.status(200).json({ itemsRecoveredQuantity });
         } else {
             const item = await prisma.item.findFirst({
                 where: {
@@ -22,8 +23,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             await getItemPricesFromApi(item.eve_api_item_id, region_id as string);
             return res.status(200).json({ message: "ok" });
         }
-
-        return res.status(200).json({ message: "ok" });
     } else if (req.method === "POST") {
         const { item_name, region_id } = req.query;
 

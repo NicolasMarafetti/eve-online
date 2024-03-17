@@ -87,7 +87,10 @@ export const calculateTotalFeesAndTaxCost = (averagePrice: number, highestBuyPri
 }
 
 export const getItemsPricesFromApiForRegion = async (regionId: string) => {
-    await fetch('/api/item_prices/update_from_api?region_id=' + regionId);
+    const responseRaw = await fetch('/api/item_prices/update_from_api?region_id=' + regionId);
+    const response = await responseRaw.json();
+    const itemsRecoveredQuantity = response.itemsRecoveredQuantity;
+    return itemsRecoveredQuantity;
 }
 
 export const getItemPriceHistoryFromApi = async (itemId: number, regionId: string): Promise<EveApiMarketHistoryResponse[]> => {
@@ -115,6 +118,12 @@ const getItemsPricesFromDatabase = async (regionId: string) => {
     });
 }
 
+/**
+ * 
+ * @param regionId 
+ * @param res 
+ * @returns {number} The number of items that have been updated
+ */
 export const refreshAllRegionItemsPrices = async (regionId: string, res: NextApiResponse) => {
     const region = await prisma.region.findFirst({
         where: {
@@ -157,4 +166,6 @@ export const refreshAllRegionItemsPrices = async (regionId: string, res: NextApi
     }
 
     await Promise.all(promises);
+
+    return promises.length;
 }

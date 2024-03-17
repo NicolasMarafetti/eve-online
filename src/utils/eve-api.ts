@@ -26,20 +26,26 @@ const getAverageVolumePerDayFromHistory = (history: EveApiMarketHistoryResponse[
     if (history.length === 0) return 0;
 
     // I search
-    const dates = history.map(h => new Date(h.date).getTime());
-    const minDate = Math.min(...dates);
-    const totalDays = (new Date().getTime() - minDate) / (1000 * 60 * 60 * 24);
+    try {
+        const dates = history.map(h => new Date(h.date).getTime());
+        const minDate = Math.min(...dates);
+        const totalDays = (new Date().getTime() - minDate) / (1000 * 60 * 60 * 24);
 
-    let totalVolume: number = 0;
-    let averageVolumePerDay: number;
+        let totalVolume: number = 0;
+        let averageVolumePerDay: number;
 
-    for (let i = 0; i < history.length; i++) {
-        totalVolume += history[i].volume;
+        for (let i = 0; i < history.length; i++) {
+            totalVolume += history[i].volume;
+        }
+
+        averageVolumePerDay = totalVolume / totalDays;
+
+        return averageVolumePerDay;
+    } catch (error) {
+        console.error(error);
+        console.info("history: ", history);
+        throw error;
     }
-
-    averageVolumePerDay = totalVolume / totalDays;
-
-    return averageVolumePerDay;
 }
 
 const getHighestBuyPrice = (orders: Order[]): number => {
@@ -66,7 +72,7 @@ const getLowestSellPrice = (orders: Order[]): null | number => {
     return lowestSellPrice;
 }
 
-const getItemHistoryPricesFromApi = async (itemApiId: number, regionApiId: number): Promise<EveApiMarketHistoryResponse[]> => {
+const getItemHistoryPricesFromApi = async (itemApiId: number, regionApiId: number): Promise<EveApiMarketHistoryResponse[] | { error: string }> => {
     try {
         const response = await fetch(`https://esi.evetech.net/latest/markets/${regionApiId}/history/?datasource=tranquility&type_id=${itemApiId}`);
         return await response.json();
@@ -137,51 +143,63 @@ export const getItemPricesFromApi = async (itemApiId: number, regionId: string):
         }
 
         // Get History (for average price and volume)
-        const itemHistoryPrices: EveApiMarketHistoryResponse[] = await getItemHistoryPricesFromApi(item.eve_api_item_id!, region.eve_api_id);
-        const averagePrice = getAveragePriceFromHistory(itemHistoryPrices);
-        const averageVolumePerDay = getAverageVolumePerDayFromHistory(itemHistoryPrices);
-
-        console.log("averageVolumePerDay: ", averageVolumePerDay);
-
-        // Get order (for highest buy price and lowest sell price)
-        const itemOrdersForItemFromApi = await getOrderForItemFromApi(item.eve_api_item_id!, region.eve_api_id);
-        const highestBuyPrice = getHighestBuyPrice(itemOrdersForItemFromApi);
-        const lowestSellPrice = getLowestSellPrice(itemOrdersForItemFromApi);
-
-        // Search the item price in the database
-        const itemPrice = await prisma.itemPrice.findFirst({
-            where: {
-                itemId: item.id,
-                regionId: regionId
+        const itemHistoryPrices = await getItemHistoryPricesFromApi(item.eve_api_item_id!, region.eve_api_id);
+        try {
+            if (!isArray(itemHistoryPrices)) {
+                console.error("itemHistoryPrices is not an array");
+                console.error("itemHistoryPrices: ", itemHistoryPrices);
+                console.error("item: ", item);
+                return;
             }
-        });
 
-        if (itemPrice) {
-            await prisma.itemPrice.update({
+            let historyPrices: EveApiMarketHistoryResponse[] = itemHistoryPrices as EveApiMarketHistoryResponse[];
+
+            const averagePrice = getAveragePriceFromHistory(historyPrices);
+            const averageVolumePerDay = getAverageVolumePerDayFromHistory(historyPrices);
+
+            // Get order (for highest buy price and lowest sell price)
+            const itemOrdersForItemFromApi = await getOrderForItemFromApi(item.eve_api_item_id!, region.eve_api_id);
+            const highestBuyPrice = getHighestBuyPrice(itemOrdersForItemFromApi);
+            const lowestSellPrice = getLowestSellPrice(itemOrdersForItemFromApi);
+
+            // Search the item price in the database
+            const itemPrice = await prisma.itemPrice.findFirst({
                 where: {
-                    id: itemPrice.id
-                },
-                data: {
-                    averagePrice: averagePrice,
-                    averageVolumePerDay: averageVolumePerDay,
-                    highestBuyPrice: highestBuyPrice,
-                    lowestSellPrice: lowestSellPrice
-                }
-            });
-        } else {
-            await prisma.itemPrice.create({
-                data: {
                     itemId: item.id,
-                    regionId: regionId,
-                    averagePrice: averagePrice,
-                    averageVolumePerDay: averageVolumePerDay,
-                    highestBuyPrice: highestBuyPrice,
-                    lowestSellPrice: lowestSellPrice,
+                    regionId: regionId
                 }
             });
-        }
 
-        return;
+            if (itemPrice) {
+                await prisma.itemPrice.update({
+                    where: {
+                        id: itemPrice.id
+                    },
+                    data: {
+                        averagePrice: averagePrice,
+                        averageVolumePerDay: averageVolumePerDay,
+                        highestBuyPrice: highestBuyPrice,
+                        lowestSellPrice: lowestSellPrice
+                    }
+                });
+            } else {
+                await prisma.itemPrice.create({
+                    data: {
+                        itemId: item.id,
+                        regionId: regionId,
+                        averagePrice: averagePrice,
+                        averageVolumePerDay: averageVolumePerDay,
+                        highestBuyPrice: highestBuyPrice,
+                        lowestSellPrice: lowestSellPrice,
+                    }
+                });
+            }
+
+            return;
+        } catch (error) {
+            console.error("Error while getting average price or volume per day");
+            console.error("itemHistoryPrices: ", itemHistoryPrices);
+        }
     } catch (error) {
         console.error("getItemPricesFromApi failed");
         console.error(error);

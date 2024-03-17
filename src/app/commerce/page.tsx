@@ -31,6 +31,7 @@ export default function Page() {
     const [activeItemId, setActiveItemId] = useState<string>("");
     const [clipBoardCopy, setClipBoardCopy] = useState<boolean>(false);
     const [iskInWallet, setIskInWallet] = useState<number>(0);
+    const [itemsRecoveredQuantity, setItemsRecoveredQuantity] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(false);
     const [regionId, setRegionId] = useState<string>("");
 
@@ -71,10 +72,19 @@ export default function Page() {
             }
         });
 
-        // Filters items without highestBuyPrice or lowestSellPrice or beneficePerDay
+        // Filters items without lowestSellPrice or beneficePerDay (no need highestBuyPrice as it can be undefined = 0)
+        let itemsQuantityFilteredForMissingData = 0;
         let itemsForRender: ItemToRender[] = itemsForRenderFull.filter(item => {
-            if (!item) return false;
-            if (!item.highestBuyPrice || !item.lowestSellPrice || !item?.beneficePerDay) return false;
+            if (!item) {
+                itemsQuantityFilteredForMissingData++;
+                return false;
+            }
+            if (!item.lowestSellPrice) {
+                item.lowestSellPrice = item.averagePrice * 2;
+            }
+            if (!item?.beneficePerDay) {
+                item.beneficePerDay = calculateItemBeneficePerDay(item.averagePrice, item.averageVolume, item.highestBuyPrice, item.lowestSellPrice);
+            }
             return true;
         });
 
@@ -84,14 +94,14 @@ export default function Page() {
             return true;
         });
 
-        // Order items by beneficePerDay
-        itemsForRender.sort((a, b) => b.beneficePerDay - a.beneficePerDay);
-
         // Filter items that I can't afford
         itemsForRender = itemsForRender.filter(item => {
             if (item.totalSellCost > maxIskToSpend) return false;
             return true;
         });
+
+        // Order items by beneficePerDay
+        itemsForRender.sort((a, b) => b.beneficePerDay - a.beneficePerDay);
 
         return itemsForRender;
     }
@@ -112,11 +122,12 @@ export default function Page() {
 
         setRegionId(e.target.value);
 
-        await getItemsPricesFromApiForRegion(e.target.value);
+        const itemsRecoveredQuantityResponse = await getItemsPricesFromApiForRegion(e.target.value);
 
         await refreshItems();
         await refreshItemPrices();
 
+        setItemsRecoveredQuantity(itemsRecoveredQuantityResponse);
         setLoading(false);
     }
 
@@ -141,6 +152,9 @@ export default function Page() {
                     <h2>ISK in wallet</h2>
                     <input className="text-black" onChange={iskInWalletChanged} type="number" value={iskInWallet} />
                 </div>
+                {
+                    itemsRecoveredQuantity > 0 && <p>{itemsRecoveredQuantity} items have been updated</p>
+                }
             </div>
             {loading && <IoReload />}
             <table>
