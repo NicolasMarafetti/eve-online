@@ -165,6 +165,30 @@ export const refreshAllRegionItemsPrices = async (regionId: string, res: NextApi
         }
     }
 
+    // Si on a moins de 50 items à vérifier, on met à jour les items les plus anciens
+    if (promises.length < 50) {
+        const itemPrices = await prisma.itemPrice.findMany({
+            select: {
+                item: true
+            },
+            where: {
+                regionId
+            },
+            orderBy: {
+                timestamp: "asc"
+            },
+            take: 50 - promises.length
+        });
+
+        for (let itemPrice of itemPrices) {
+            if (typeof itemPrice.item.eve_api_item_id !== "number") {
+                console.error("Item missing eve_api_item_id: ", itemPrice.item);
+                continue;
+            }
+            promises.push(getItemPricesFromApi(itemPrice.item.eve_api_item_id, region.id));
+        }
+    }
+
     await Promise.all(promises);
 
     return promises.length;

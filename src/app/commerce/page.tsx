@@ -31,7 +31,7 @@ export default function Page() {
     const [activeItemId, setActiveItemId] = useState<string>("");
     const [clipBoardCopy, setClipBoardCopy] = useState<boolean>(false);
     const [iskInWallet, setIskInWallet] = useState<number>(0);
-    const [itemsRecoveredQuantity, setItemsRecoveredQuantity] = useState<number>(0);
+    const [itemsRecoveredQuantity, setItemsRecoveredQuantity] = useState<number | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const [regionId, setRegionId] = useState<string>("");
 
@@ -153,7 +153,7 @@ export default function Page() {
                     <input className="text-black" onChange={iskInWalletChanged} type="number" value={iskInWallet} />
                 </div>
                 {
-                    itemsRecoveredQuantity > 0 && <p>{itemsRecoveredQuantity} items have been updated</p>
+                    (itemsRecoveredQuantity !== null) && <p>{itemsRecoveredQuantity} items have been updated</p>
                 }
             </div>
             {loading && <IoReload />}

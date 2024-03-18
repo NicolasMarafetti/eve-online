@@ -74,8 +74,12 @@ const getLowestSellPrice = (orders: Order[]): null | number => {
 
 const getItemHistoryPricesFromApi = async (itemApiId: number, regionApiId: number): Promise<EveApiMarketHistoryResponse[] | { error: string }> => {
     try {
-        const response = await fetch(`https://esi.evetech.net/latest/markets/${regionApiId}/history/?datasource=tranquility&type_id=${itemApiId}`);
-        return await response.json();
+        const responseRaw = await fetch(`https://esi.evetech.net/latest/markets/${regionApiId}/history/?datasource=tranquility&type_id=${itemApiId}`);
+        const response = await responseRaw.json();
+        if (!isArray(response)) {
+            return response;
+        }
+        return response;
     } catch (error) {
         console.error("getItemHistoryPricesFromApi failed");
         console.error("url called: ", `https://esi.evetech.net/latest/markets/${regionApiId}/history/?datasource=tranquility&type_id=${itemApiId}`);
@@ -144,23 +148,31 @@ export const getItemPricesFromApi = async (itemApiId: number, regionId: string):
 
         // Get History (for average price and volume)
         const itemHistoryPrices = await getItemHistoryPricesFromApi(item.eve_api_item_id!, region.eve_api_id);
+
         try {
+            let averagePrice: number = 0;
+            let averageVolumePerDay: number = 0;
+            let highestBuyPrice: number = 0;
+            let lowestSellPrice: number | null = 0;
+
             if (!isArray(itemHistoryPrices)) {
-                console.error("itemHistoryPrices is not an array");
-                console.error("itemHistoryPrices: ", itemHistoryPrices);
-                console.error("item: ", item);
-                return;
+                if (typeof itemHistoryPrices.error === "undefined" || itemHistoryPrices.error !== "Type not found!") {
+                    console.error("itemHistoryPrices is not an array");
+                    console.error("itemHistoryPrices: ", itemHistoryPrices);
+                    console.error("item: ", item);
+                    return;
+                }
+            } else {
+                let historyPrices: EveApiMarketHistoryResponse[] = itemHistoryPrices as EveApiMarketHistoryResponse[];
+
+                averagePrice = getAveragePriceFromHistory(historyPrices);
+                averageVolumePerDay = getAverageVolumePerDayFromHistory(historyPrices);
+
+                // Get order (for highest buy price and lowest sell price)
+                const itemOrdersForItemFromApi = await getOrderForItemFromApi(item.eve_api_item_id!, region.eve_api_id);
+                highestBuyPrice = getHighestBuyPrice(itemOrdersForItemFromApi);
+                lowestSellPrice = getLowestSellPrice(itemOrdersForItemFromApi);
             }
-
-            let historyPrices: EveApiMarketHistoryResponse[] = itemHistoryPrices as EveApiMarketHistoryResponse[];
-
-            const averagePrice = getAveragePriceFromHistory(historyPrices);
-            const averageVolumePerDay = getAverageVolumePerDayFromHistory(historyPrices);
-
-            // Get order (for highest buy price and lowest sell price)
-            const itemOrdersForItemFromApi = await getOrderForItemFromApi(item.eve_api_item_id!, region.eve_api_id);
-            const highestBuyPrice = getHighestBuyPrice(itemOrdersForItemFromApi);
-            const lowestSellPrice = getLowestSellPrice(itemOrdersForItemFromApi);
 
             // Search the item price in the database
             const itemPrice = await prisma.itemPrice.findFirst({
